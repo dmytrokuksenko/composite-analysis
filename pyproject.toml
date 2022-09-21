@@ -8,6 +8,9 @@ packages = [{include = "composite_analysis"}]
 
 [tool.poetry.dependencies]
 python = "^3.10"
+PyQt6 = "^6.3.1"
+numpy = "^1.23.3"
+opencv-python = "^4.6.0.66"
 
 
 [build-system]
