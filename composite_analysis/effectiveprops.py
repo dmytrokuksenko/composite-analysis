@@ -9,7 +9,7 @@ import numpy as np
 
 
 def estimation():
-    
+
     # Material Properties of a unidirectional lamina (T300/5208)
 
     e1 = 136e03  # MPa
@@ -28,9 +28,12 @@ def estimation():
     f3t = 59  # MPa
     f4 = 128  # MPa
     f6 = 75  # MPa
+    thermal_coeff = [1,1,1]
+    moisture_coeff = [1,1,1]
 
     angles = [0, 90, 90, 0]
     thx = [0.2, 0.2, 0.2, 0.2]
+    resultants = [1,0,0,0,0,0]
 
     stiff_matrix = reduced_stiff_matrix(e1, e2, nu12, g12)
 
@@ -41,9 +44,8 @@ def estimation():
         else:
             q.append(stiff_matrix)
 
-
-    abd = abd_assemble(q, thx)
-    print(f'The abd matrix is {abd}')
+    abd = abd_matrix(q, thx)
+    print(f"The abd matrix is {abd}")
 
 
 def reduced_stiff_matrix(e1, e2, nu12, g12):
@@ -95,5 +97,72 @@ def abd_matrix(q_sum, thx):
 
     return abd
 
+
 def inverse_abd_matrix(abd):
     return np.linalg.inv(abd)
+
+def effective_thermal_coef(alpha, theta=0):
+    
+    eff_alpha = np.zeros(shape=(2, 2), dtype=np.float32)
+
+    m = np.cos(theta)
+    n = np.sin(theta)
+
+    eff_alpha[0,0] = alpha[0, 0]*m**2 + alpha[1, 1]*n**2
+    eff_alpha[1,1] = alpha[0, 0]*n**2 + alpha[1, 1]*m**2
+    eff_alpha[0,1] = 2*m*n*(alpha[0, 0] - alpha[1, 1])
+
+    return eff_alpha
+
+def effective_moisture_coef(beta, theta=0):
+    
+    eff_beta = np.zeros(shape=(2, 2), dtype=np.float32)
+
+    m = np.cos(theta)
+    n = np.sin(theta)
+
+    eff_beta[0,0] = beta[0, 0]*m**2 + beta[1, 1]*n**2
+    eff_beta[1,1] = beta[0, 0]*n**2 + beta[1, 1]*m**2
+    eff_beta[0,1] = 2*m*n*(beta[0, 0] - beta[1, 1])
+
+    return eff_beta
+
+
+def thermal_resultants(q, alpha, thx, delta_t):
+    
+    f = np.zeros(shape=(6,), dtype=np.float32)
+
+    for t in thx:
+        f[0] += t*(q[0,0]*alpha[0,0] + q[0,1]*alpha[1,1] + q[0,2]*alpha[0,1])
+        f[1] += t*(q[1,0]*alpha[0,0] + q[1,1]*alpha[1,1] + q[1,2]*alpha[0,1])
+        f[2] += t*(q[2,0]*alpha[0,0] + q[2,1]*alpha[1,1] + q[2,2]*alpha[0,1])
+
+        f[3] += (3*t**2)*(q[0,0]*alpha[0,0] + q[0,1]*alpha[1,1] + q[0,2]*alpha[0,1])
+        f[4] += (3*t**2)*(q[1,0]*alpha[0,0] + q[1,1]*alpha[1,1] + q[1,2]*alpha[0,1])
+        f[5] += (3*t**2)*(q[2,0]*alpha[0,0] + q[2,1]*alpha[1,1] + q[2,2]*alpha[0,1])
+
+
+    f[:3] = f[:3] * delta_t
+    f[3:6] = f[3:6] * delta_t/2
+
+    return f
+
+
+def moisture_resultants(q, beta, thx, delta_t):
+
+    f = np.zeros(shape=(6,), dtype=np.float32)
+
+    for t in thx:
+        f[0] += t*(q[0,0]*beta[0,0] + q[0,1]*beta[1,1] + q[0,2]*beta[0,1])
+        f[1] += t*(q[1,0]*beta[0,0] + q[1,1]*beta[1,1] + q[1,2]*beta[0,1])
+        f[2] += t*(q[2,0]*beta[0,0] + q[2,1]*beta[1,1] + q[2,2]*beta[0,1])
+
+        f[3] += (3*t**2)*(q[0,0]*beta[0,0] + q[0,1]*beta[1,1] + q[0,2]*beta[0,1])
+        f[4] += (3*t**2)*(q[1,0]*beta[0,0] + q[1,1]*beta[1,1] + q[1,2]*beta[0,1])
+        f[5] += (3*t**2)*(q[2,0]*beta[0,0] + q[2,1]*beta[1,1] + q[2,2]*beta[0,1])
+
+
+    f[:3] = f[:3] * delta_t
+    f[3:6] = f[3:6] * delta_t/2
+
+    return f

@@ -7,7 +7,7 @@
 
 import sys
 from PyQt6 import QtWidgets
-
+from effectiveprops import estimation
 
 from mainwindow import MainWindow
 
