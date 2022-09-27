@@ -28,12 +28,12 @@ def estimation():
     f3t = 59  # MPa
     f4 = 128  # MPa
     f6 = 75  # MPa
-    thermal_coeff = [1,1,1]
-    moisture_coeff = [1,1,1]
+    thermal_coeff = [1, 1, 1]
+    moisture_coeff = [1, 1, 1]
 
     angles = [0, 90, 90, 0]
     thx = [0.2, 0.2, 0.2, 0.2]
-    resultants = [1,0,0,0,0,0]
+    resultants = [1, 0, 0, 0, 0, 0]
 
     stiff_matrix = reduced_stiff_matrix(e1, e2, nu12, g12)
 
@@ -101,49 +101,62 @@ def abd_matrix(q_sum, thx):
 def inverse_abd_matrix(abd):
     return np.linalg.inv(abd)
 
+
 def effective_thermal_coef(alpha, theta=0):
-    
+
     eff_alpha = np.zeros(shape=(2, 2), dtype=np.float32)
 
     m = np.cos(theta)
     n = np.sin(theta)
 
-    eff_alpha[0,0] = alpha[0, 0]*m**2 + alpha[1, 1]*n**2
-    eff_alpha[1,1] = alpha[0, 0]*n**2 + alpha[1, 1]*m**2
-    eff_alpha[0,1] = 2*m*n*(alpha[0, 0] - alpha[1, 1])
+    eff_alpha[0, 0] = alpha[0, 0] * m**2 + alpha[1, 1] * n**2
+    eff_alpha[1, 1] = alpha[0, 0] * n**2 + alpha[1, 1] * m**2
+    eff_alpha[0, 1] = 2 * m * n * (alpha[0, 0] - alpha[1, 1])
 
     return eff_alpha
 
+
 def effective_moisture_coef(beta, theta=0):
-    
+
     eff_beta = np.zeros(shape=(2, 2), dtype=np.float32)
 
     m = np.cos(theta)
     n = np.sin(theta)
 
-    eff_beta[0,0] = beta[0, 0]*m**2 + beta[1, 1]*n**2
-    eff_beta[1,1] = beta[0, 0]*n**2 + beta[1, 1]*m**2
-    eff_beta[0,1] = 2*m*n*(beta[0, 0] - beta[1, 1])
+    eff_beta[0, 0] = beta[0, 0] * m**2 + beta[1, 1] * n**2
+    eff_beta[1, 1] = beta[0, 0] * n**2 + beta[1, 1] * m**2
+    eff_beta[0, 1] = 2 * m * n * (beta[0, 0] - beta[1, 1])
 
     return eff_beta
 
 
 def thermal_resultants(q, alpha, thx, dt):
-    
+
     f = np.zeros(shape=(6,), dtype=np.float32)
 
     for t in thx:
-        f[0] += t*(q[0,0]*alpha[0,0] + q[0,1]*alpha[1,1] + q[0,2]*alpha[0,1])
-        f[1] += t*(q[1,0]*alpha[0,0] + q[1,1]*alpha[1,1] + q[1,2]*alpha[0,1])
-        f[2] += t*(q[2,0]*alpha[0,0] + q[2,1]*alpha[1,1] + q[2,2]*alpha[0,1])
+        f[0] += t * (
+            q[0, 0] * alpha[0, 0] + q[0, 1] * alpha[1, 1] + q[0, 2] * alpha[0, 1]
+        )
+        f[1] += t * (
+            q[1, 0] * alpha[0, 0] + q[1, 1] * alpha[1, 1] + q[1, 2] * alpha[0, 1]
+        )
+        f[2] += t * (
+            q[2, 0] * alpha[0, 0] + q[2, 1] * alpha[1, 1] + q[2, 2] * alpha[0, 1]
+        )
 
-        f[3] += (3*t**2)*(q[0,0]*alpha[0,0] + q[0,1]*alpha[1,1] + q[0,2]*alpha[0,1])
-        f[4] += (3*t**2)*(q[1,0]*alpha[0,0] + q[1,1]*alpha[1,1] + q[1,2]*alpha[0,1])
-        f[5] += (3*t**2)*(q[2,0]*alpha[0,0] + q[2,1]*alpha[1,1] + q[2,2]*alpha[0,1])
-
+        f[3] += (3 * t**2) * (
+            q[0, 0] * alpha[0, 0] + q[0, 1] * alpha[1, 1] + q[0, 2] * alpha[0, 1]
+        )
+        f[4] += (3 * t**2) * (
+            q[1, 0] * alpha[0, 0] + q[1, 1] * alpha[1, 1] + q[1, 2] * alpha[0, 1]
+        )
+        f[5] += (3 * t**2) * (
+            q[2, 0] * alpha[0, 0] + q[2, 1] * alpha[1, 1] + q[2, 2] * alpha[0, 1]
+        )
 
     f[:3] = f[:3] * dt
-    f[3:6] = f[3:6] * dt/2
+    f[3:6] = f[3:6] * dt / 2
 
     return f
 
@@ -153,32 +166,40 @@ def moisture_resultants(q, beta, thx, dt):
     f = np.zeros(shape=(6,), dtype=np.float32)
 
     for t in thx:
-        f[0] += t*(q[0,0]*beta[0,0] + q[0,1]*beta[1,1] + q[0,2]*beta[0,1])
-        f[1] += t*(q[1,0]*beta[0,0] + q[1,1]*beta[1,1] + q[1,2]*beta[0,1])
-        f[2] += t*(q[2,0]*beta[0,0] + q[2,1]*beta[1,1] + q[2,2]*beta[0,1])
+        f[0] += t * (q[0, 0] * beta[0, 0] + q[0, 1] * beta[1, 1] + q[0, 2] * beta[0, 1])
+        f[1] += t * (q[1, 0] * beta[0, 0] + q[1, 1] * beta[1, 1] + q[1, 2] * beta[0, 1])
+        f[2] += t * (q[2, 0] * beta[0, 0] + q[2, 1] * beta[1, 1] + q[2, 2] * beta[0, 1])
 
-        f[3] += (3*t**2)*(q[0,0]*beta[0,0] + q[0,1]*beta[1,1] + q[0,2]*beta[0,1])
-        f[4] += (3*t**2)*(q[1,0]*beta[0,0] + q[1,1]*beta[1,1] + q[1,2]*beta[0,1])
-        f[5] += (3*t**2)*(q[2,0]*beta[0,0] + q[2,1]*beta[1,1] + q[2,2]*beta[0,1])
-
+        f[3] += (3 * t**2) * (
+            q[0, 0] * beta[0, 0] + q[0, 1] * beta[1, 1] + q[0, 2] * beta[0, 1]
+        )
+        f[4] += (3 * t**2) * (
+            q[1, 0] * beta[0, 0] + q[1, 1] * beta[1, 1] + q[1, 2] * beta[0, 1]
+        )
+        f[5] += (3 * t**2) * (
+            q[2, 0] * beta[0, 0] + q[2, 1] * beta[1, 1] + q[2, 2] * beta[0, 1]
+        )
 
     f[:3] = f[:3] * dt
-    f[3:6] = f[3:6] * dt/2
+    f[3:6] = f[3:6] * dt / 2
 
     return f
 
+
 def get_average_strains(abd, res):
     strain = np.dot(abd, res)
-    return strain 
+    return strain
 
-def ply_strain(str, thx): 
-    ply_str = str[:3] + thx*str[3:6]
+
+def ply_strain(str, thx):
+    ply_str = str[:3] + thx * str[3:6]
     return ply_str
+
 
 def ply_stress(q, ply_str, dt, dm, alpha, beta):
     strain = []
-    strain[0] = ply_str[0] - alpha[0, 0]*dt - beta[0,0]*dm
-    strain[1] = ply_str[1] - alpha[1, 1]*dt - beta[1,1]*dm
-    strain[2] = ply_str[2] - alpha[0, 1]*dt - beta[0,1]*dm
+    strain[0] = ply_str[0] - alpha[0, 0] * dt - beta[0, 0] * dm
+    strain[1] = ply_str[1] - alpha[1, 1] * dt - beta[1, 1] * dm
+    strain[2] = ply_str[2] - alpha[0, 1] * dt - beta[0, 1] * dm
     ply_stress = np.dot(q, strain)
     return ply_stress
