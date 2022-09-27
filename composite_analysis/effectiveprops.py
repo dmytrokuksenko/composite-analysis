@@ -9,7 +9,8 @@ import numpy as np
 
 
 def estimation():
-    # Mat Properties of the uni lamina (T300/5208)
+    
+    # Material Properties of a unidirectional lamina (T300/5208)
 
     e1 = 136e03  # MPa
     e2 = 9.80e03  # MPa
@@ -41,6 +42,10 @@ def estimation():
             q.append(stiff_matrix)
 
 
+    abd = abd_assemble(q, thx)
+    print(f'The abd matrix is {abd}')
+
+
 def reduced_stiff_matrix(e1, e2, nu12, g12):
 
     q = np.zeros(shape=(3, 3), dtype=np.float32)
@@ -68,12 +73,12 @@ def matrix_transform(q, theta):
         ]
     )
 
-    q_tr = np.dot(np.inv(t), q)
+    q_tr = np.dot(np.linalg.inv(t), q)
 
     return q_tr
 
 
-def abd_assemble(q_sum, thx):
+def abd_matrix(q_sum, thx):
 
     a = np.zeros(shape=(3, 3), dtype=np.float32)
     b = np.zeros(shape=(3, 3), dtype=np.float32)
@@ -84,6 +89,11 @@ def abd_assemble(q_sum, thx):
         b += q * t**2
         d += q * t**3
 
-    abd = np.hstack(np.vstack(a, (1 / 2) * b), np.vstack(b, (1 / 3) * d))
+    ab = np.vstack((a, (1 / 2) * b))
+    bd = np.vstack((b, (1 / 3) * d))
+    abd = np.hstack((ab, bd))
 
     return abd
+
+def inverse_abd_matrix(abd):
+    return np.linalg.inv(abd)
