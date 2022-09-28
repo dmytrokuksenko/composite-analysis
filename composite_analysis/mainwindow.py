@@ -20,10 +20,14 @@ class MainWindow(QtWidgets.QMainWindow):
         layout = QtWidgets.QVBoxLayout()
         self.grapWidget = Plot()
         layout.addWidget(self.grapWidget)
-        layout.addWidget(QtWidgets.QPushButton('Refresh'))
+        self.refresh_button = QtWidgets.QPushButton('Refresh')
+        layout.addWidget(self.refresh_button)
         widget = QtWidgets.QWidget()
         widget.setLayout(layout)
         self.setCentralWidget(widget)
+
+        self.refresh_button.setCheckable(True)
+        self.refresh_button.clicked.connect(self.on_refreshed_clicked)
 
 
         # Add menu bar to the software layout
@@ -37,6 +41,8 @@ class MainWindow(QtWidgets.QMainWindow):
         file_menu.addAction(self.open)
         file_menu.addAction(self.save)
         file_menu.addAction(self.exit)
+
+        self.open.triggered.connect(self.on_refreshed_clicked)
 
         # Add items to Laminate Analysis menu bar
         laminate_analysis = menu.addMenu("&Laminate Analysis")
@@ -62,3 +68,11 @@ class MainWindow(QtWidgets.QMainWindow):
         self.help = QtGui.QAction("Help", self)
         help.addAction(self.help)
         help.addAction(self.about)
+
+    def on_refreshed_clicked(self):
+        layout = QtWidgets.QVBoxLayout()
+        self.refresh_button = QtWidgets.QPushButton('Refresh')
+        layout.addWidget(self.refresh_button)
+        widget = QtWidgets.QWidget()
+        widget.setLayout(layout)
+        self.setCentralWidget(widget)
