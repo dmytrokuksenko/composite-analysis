@@ -6,6 +6,7 @@
 """
 
 from PyQt6 import QtWidgets, QtGui
+from plot import Plot
 
 
 class MainWindow(QtWidgets.QMainWindow):
@@ -14,6 +15,16 @@ class MainWindow(QtWidgets.QMainWindow):
 
         # Set title for the main window
         self.setWindowTitle("Desing & Simulation of Composite Materials")
+        self.setGeometry(100, 100, 800, 400)
+
+        layout = QtWidgets.QVBoxLayout()
+        self.grapWidget = Plot()
+        layout.addWidget(self.grapWidget)
+        layout.addWidget(QtWidgets.QPushButton('Refresh'))
+        widget = QtWidgets.QWidget()
+        widget.setLayout(layout)
+        self.setCentralWidget(widget)
+
 
         # Add menu bar to the software layout
         menu = self.menuBar()

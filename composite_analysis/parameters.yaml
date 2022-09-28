@@ -1,2 +1,13 @@
 # A database of the material properties
 
+name : 'T300/5208'
+mech_props : (136000, 9800, 0.28, 4700, 4700)
+strength : (3250, 1590, 62, 200, 75)
+thermal : (-0.9e-06, 22.e-06, 22.e-06)
+moisture : (0, 0.05, 0.05)
+thickness : 0.2
+density : 1.54e-09
+resultants : (1, 0, 0, 0, 0, 0)
+layup : (0, 90, 45, -45, -45, 45, 90, 0)
+dt : -60
+dm : 0.001

@@ -7,7 +7,6 @@
 
 import sys
 from PyQt6 import QtWidgets
-from layup import estimation
 
 from mainwindow import MainWindow
 
