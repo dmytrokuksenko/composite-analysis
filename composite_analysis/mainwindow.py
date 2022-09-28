@@ -51,5 +51,3 @@ class MainWindow(QtWidgets.QMainWindow):
         self.help = QtGui.QAction("Help", self)
         help.addAction(self.help)
         help.addAction(self.about)
-
-        # self.showMaximized()

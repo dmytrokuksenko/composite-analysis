@@ -28,11 +28,12 @@ def estimation():
     f3t = 59  # MPa
     f4 = 128  # MPa
     f6 = 75  # MPa
+
     thermal_coeff = [1, 1, 1]
     moisture_coeff = [1, 1, 1]
 
-    angles = [0, 90, 90, 0]
-    thx = [0.2, 0.2, 0.2, 0.2]
+    angles = (0, 90, 90, 0)
+    thx = (0.2, 0.2, 0.2, 0.2)
     resultants = [1, 0, 0, 0, 0, 0]
 
     stiff_matrix = reduced_stiff_matrix(e1, e2, nu12, g12)
