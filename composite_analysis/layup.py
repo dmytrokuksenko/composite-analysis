@@ -9,11 +9,9 @@ import numpy as np
 from preprocess import get_material_props
 
 
-def estimation():
+def abd_estimation():
 
-    # Material Properties of a unidirectional lamina (T300/5208)
-
-    params = get_material_props(file_name='composite_analysis/parameters.yaml')
+    params = get_material_props(file_name='composite_analysis/layup.yaml')
 
     stiff_matrix = reduced_stiff_matrix(params['mech_props'])
 
