@@ -1,4 +1,5 @@
 # A database of the material properties
+# Mech Props are in MPa
 
 name : 'T300/5208'
 mech_props : (136000, 9800, 0.28, 4700, 4700)
