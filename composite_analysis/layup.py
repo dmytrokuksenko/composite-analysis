@@ -12,22 +12,28 @@ from composite_analysis.material import Material
 
 def abd_estimation():
 
-    params = get_material_props(file_name='composite_analysis/layup.yaml')
+    params = get_material_props(file_name="composite_analysis/layup.yaml")
 
-    mat = Material(params['name'], params['mech_props'], params['thickness'], params['dt'], params['dm'])
+    mat = Material(
+        params["name"],
+        params["mech_props"],
+        params["thickness"],
+        params["dt"],
+        params["dm"],
+    )
 
     print(mat)
 
     stiff_matrix = reduced_stiff_matrix(mat.props)
 
     q = []
-    for angle in params['layup']:
+    for angle in params["layup"]:
         if angle != 0:
             q.append(matrix_transform(stiff_matrix, angle))
         else:
             q.append(stiff_matrix)
 
-    abd = abd_matrix(q, params['thickness'])
+    abd = abd_matrix(q, params["thickness"])
     print(f"The abd matrix is {abd}")
 
 

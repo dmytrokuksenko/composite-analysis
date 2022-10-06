@@ -6,15 +6,14 @@
 """
 
 
-class Material():
-
+class Material:
     def __init__(self, name, props, thx, dt, dm):
         self.name = name
         self.props = props
         self.thickness = thx
         self.dt = dt
         self.dm = dm
-    
+
     def __len__(self):
         return len(self.props)
 
@@ -26,17 +25,20 @@ class Material():
         return self.props[key]
 
     def __str__(self):
-        return f'The material is {self.name}'
-        
+        return f"The material is {self.name}"
+
+
 class Iso(Material):
     pass
+
 
 class TransOrtho(Material):
     pass
 
+
 class Ortho(Material):
     pass
 
+
 class Aniso(Material):
     pass
-    

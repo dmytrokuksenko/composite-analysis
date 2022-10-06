@@ -20,7 +20,7 @@ class MainWindow(QtWidgets.QMainWindow):
         layout = QtWidgets.QVBoxLayout()
         self.grapWidget = Plot()
         layout.addWidget(self.grapWidget)
-        self.refresh_button = QtWidgets.QPushButton('Refresh')
+        self.refresh_button = QtWidgets.QPushButton("Refresh")
         layout.addWidget(self.refresh_button)
         widget = QtWidgets.QWidget()
         widget.setLayout(layout)
@@ -28,7 +28,6 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.refresh_button.setCheckable(True)
         self.refresh_button.clicked.connect(self.on_refreshed_clicked)
-
 
         # Add menu bar to the software layout
         menu = self.menuBar()
@@ -71,7 +70,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def on_refreshed_clicked(self):
         layout = QtWidgets.QVBoxLayout()
-        self.refresh_button = QtWidgets.QPushButton('Refresh')
+        self.refresh_button = QtWidgets.QPushButton("Refresh")
         layout.addWidget(self.refresh_button)
         widget = QtWidgets.QWidget()
         widget.setLayout(layout)
