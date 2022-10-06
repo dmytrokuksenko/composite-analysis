@@ -6,25 +6,18 @@
 """
 
 
-class Material:
+class Material():
 
-    def __init__(self, *args, **kwargs):
-        
-        for key, value in kwargs.items():
-            self.key = value
-        
-
-    def __str__(self, name):
-        return f'The material is {name}'
+    def __init__(self, name, props):
+        self.name = name
+        self.props = props
 
 
 class Composite(Material):
-    def __init__ (self, **kwarg):
-        Material.__init__(self, **kwarg)
+    pass
 
 
 class Metal(Material):
-    def __init__ (self, **kwarg):
-        Material.__init__(self, **kwarg)
+    pass
 
     
