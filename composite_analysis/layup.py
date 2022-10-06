@@ -7,13 +7,18 @@
 
 import numpy as np
 from preprocess import get_material_props
+from composite_analysis.material import Material
 
 
 def abd_estimation():
 
     params = get_material_props(file_name='composite_analysis/layup.yaml')
 
-    stiff_matrix = reduced_stiff_matrix(params['mech_props'])
+    E1, E2, nu12, G12, G23 = params['mech_props']
+
+    mat = Material()
+
+    stiff_matrix = reduced_stiff_matrix()
 
     q = []
     for angle in params['layup']:
