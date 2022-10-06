@@ -26,7 +26,7 @@ class Material():
         return self.props[key]
 
     def __str__(self):
-        return {'The material is {self.name}'}
+        return f'The material is {self.name}'
         
 class Iso(Material):
     pass
