@@ -7,12 +7,13 @@
 
 
 class Material:
-    def __init__(self, name, props, thx, dt, dm):
+    def __init__(self, name, props, thx, dt, dm, theta=None):
         self.name = name
         self.props = props
         self.thickness = thx
         self.dt = dt
         self.dm = dm
+        self.theta = None
 
     def __len__(self):
         return len(self.props)

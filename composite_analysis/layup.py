@@ -22,8 +22,6 @@ def abd_estimation():
         params["dm"],
     )
 
-    print(mat)
-
     stiff_matrix = reduced_stiff_matrix(mat.props)
 
     q = []

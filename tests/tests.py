@@ -7,12 +7,12 @@
 from composite_analysis import __version__
 from composite_analysis.material import Iso, TransOrtho, Ortho, Aniso
 
-
+# General Tests
 def test_version():
     """Tests a software version."""
     assert __version__ == "0.1.0"
 
-
+# Material Tests
 def test_new_iso_mat():
     """Tests a creation of a new isotropic mat"""
     assert Iso() is not None

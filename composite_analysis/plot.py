@@ -13,7 +13,7 @@ import numpy as np
 class Plot(PlotWidget):
     def __init__(self):
         PlotWidget.__init__(self)
-        self.set_graph()
+        # self.set_graph()
 
     def set_graph(self):
 

@@ -15,7 +15,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
         # Set title for the main window
         self.setWindowTitle("Desing & Simulation of Composite Materials")
-        self.setGeometry(100, 100, 800, 400)
+        self.setGeometry(100, 100, 900, 500)
 
         layout = QtWidgets.QVBoxLayout()
         self.grapWidget = Plot()
